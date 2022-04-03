@@ -49,7 +49,7 @@ class GameController extends Controller
         // shorten this function without compromising its functionality. Note that by "shorten", we don't mean to just
         // remove spaces and line breaks ;)
         // =============================================================================================================
-
+/*
         if (    // Check the first row
             $game->getRow(0)->getSpace( 0 ) === $game->getRow(0)->getSpace( 1 ) &&
             $game->getRow(0)->getSpace( 0 ) === $game->getRow(0)->getSpace( 2 ) &&
@@ -97,6 +97,54 @@ class GameController extends Controller
             $game->getAntiDiagonal(0)->getSpace( 0 ) === $game->getAntiDiagonal(0)->getSpace( 2 ) &&
             $game->getAntiDiagonal(0)->getSpace( 0 ) !== GameMark::None
         ) return true;
+*/      
+        $size = Gameboard::TTT_SIZE;
+        //rows
+        for($i = 0; $i < $size; $i++){
+            for($j = 0; $j < $size; $j++){
+                if(
+                    $game->getRow($i)->getSpace(($j + $size)%$size) === $game->getRow($i)->getSpace(($j+1+$size)%$size) &&
+                    $game->getRow($i)->getSpace(($j+1+$size)%$size) === $game->getRow($i)->getSpace(($j+2+$size)%$size) &&
+                    $game->getRow($i)->getSpace(($j+2+$size)%$size) === $game->getRow($i)->getSpace(($j+3+$size)%$size) &&
+                    $game->getRow($i)->getSpace($j) !== GameMark::None
+                ) return true;
+                }
+        }
+
+        //columns
+        for($i = 0; $i < $size; $i++){
+            for($j = 0; $j < $size; $j++){
+                if(
+                    $game->getColumn($i)->getSpace(($j + $size)%$size) === $game->getColumn($i)->getSpace(($j+1+$size)%$size) &&
+                    $game->getColumn($i)->getSpace(($j+1+$size)%$size) === $game->getColumn($i)->getSpace(($j+2+$size)%$size) &&
+                    $game->getColumn($i)->getSpace(($j+2+$size)%$size) === $game->getColumn($i)->getSpace(($j+3+$size)%$size) &&
+                    $game->getColumn($i)->getSpace($j) !== GameMark::None
+                ) return true;
+            }
+        }
+
+        //main diagonal
+        for($i = 0; $i < $size-2; $i++){
+            for($j = 0; $j < $size; $j++){
+                if(
+                    $game->getMainDiagonal($i)->getSpace(($j + $size)%$size) === $game->getMainDiagonal($i)->getSpace(($j+1+$size)%$size) &&
+                    $game->getMainDiagonal($i)->getSpace(($j+1+$size)%$size) === $game->getMainDiagonal($i)->getSpace(($j+2+$size)%$size) &&
+                    $game->getMainDiagonal($i)->getSpace(($j+2+$size)%$size) === $game->getMainDiagonal($i)->getSpace(($j+3+$size)%$size) &&
+                    $game->getMainDiagonal($i)->getSpace($j) !== GameMark::None
+                ) return true;
+            }
+        }
+        //anti-diagonal
+        for($i = 0; $i < $size-2; $i++){
+            for($j = 0; $j < $size; $j++){
+                if(
+                    $game->getAntiDiagonal($i)->getSpace(($j + $size)%$size) === $game->getAntiDiagonal($i)->getSpace(($j+1+$size)%$size) &&
+                    $game->getAntiDiagonal($i)->getSpace(($j+1+$size)%$size) === $game->getAntiDiagonal($i)->getSpace(($j+2+$size)%$size) &&
+                    $game->getAntiDiagonal($i)->getSpace(($j+2+$size)%$size) === $game->getAntiDiagonal($i)->getSpace(($j+3+$size)%$size) &&
+                    $game->getAntiDiagonal($i)->getSpace($j) !== GameMark::None
+                ) return true;
+            }
+        }
 
         return false;
     }
